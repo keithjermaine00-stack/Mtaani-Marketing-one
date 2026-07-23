@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { ArrowRight, ArrowUpRight, Target } from 'lucide-react';
 
-// Animated counter
 function useCounter(target: number, duration = 2000, active = false) {
   const [val, setVal] = useState(0);
   useEffect(() => {
@@ -24,21 +23,71 @@ const barData = [
   { month: 'May',  heights: [28, 42, 22] },
   { month: 'Jun',  heights: [36, 28, 44] },
   { month: 'Jul',  heights: [52, 38, 48] },
-  { month: 'Aug',  heights: [82, 74, 88] }, // peak – highlighted in green
+  { month: 'Aug',  heights: [82, 74, 88] },
   { month: 'Sep',  heights: [44, 34, 52] },
 ];
 
+type Phase = 'idle' | 'abstract' | 'campaign' | 'goal' | 'settled';
+
 export default function Hero() {
+  const [phase, setPhase] = useState<Phase>('idle');
   const [active, setActive] = useState(false);
+  const [offset, setOffset] = useState({ x: 0, y: 0 });
   const sectionRef = useRef<HTMLDivElement>(null);
+  const rightPanelRef = useRef<HTMLDivElement>(null);
+  const cardsContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const t = setTimeout(() => setActive(true), 600);
-    return () => clearTimeout(t);
+    const calculateOffset = () => {
+      if (rightPanelRef.current && cardsContainerRef.current) {
+        const rightRect = rightPanelRef.current.getBoundingClientRect();
+        const cardsRect = cardsContainerRef.current.getBoundingClientRect();
+        if (rightRect.width > 0) {
+          const dx = rightRect.left - cardsRect.left;
+          const rightCenter = rightRect.top + rightRect.height / 2;
+          const cardsCenter = cardsRect.top + cardsRect.height / 2;
+          const dy = rightCenter - cardsCenter;
+          setOffset({ x: dx, y: dy });
+        }
+      }
+    };
+
+    requestAnimationFrame(() => requestAnimationFrame(calculateOffset));
+
+    const timers: ReturnType<typeof setTimeout>[] = [];
+    timers.push(setTimeout(() => setPhase('abstract'), 100));
+    timers.push(setTimeout(() => setPhase('campaign'), 500));
+    timers.push(setTimeout(() => setPhase('goal'), 1100));
+    timers.push(setTimeout(() => setPhase('settled'), 1900));
+
+    return () => timers.forEach(clearTimeout);
   }, []);
+
+  useEffect(() => {
+    if (phase === 'campaign') setActive(true);
+  }, [phase]);
 
   const impressions = useCounter(18256, 2200, active);
   const goalVal = useCounter(11560, 2400, active);
+
+  const getCardStyle = (cardPhase: 'campaign' | 'goal') => {
+    const isVisible =
+      phase === 'settled' ||
+      (cardPhase === 'campaign' && (phase === 'campaign' || phase === 'goal')) ||
+      (cardPhase === 'goal' && phase === 'goal');
+    const isOnAbstract = isVisible && phase !== 'settled';
+    const extraY = cardPhase === 'goal' && !isVisible ? 30 : 0;
+
+    return {
+      opacity: isVisible ? 1 : 0,
+      transform: !isVisible
+        ? `translate(${offset.x}px, ${offset.y + extraY}px) scale(0.92)`
+        : isOnAbstract
+        ? `translate(${offset.x}px, ${offset.y}px) scale(1.03)`
+        : 'translate(0px, 0px) scale(1)',
+      transition: 'transform 0.9s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.6s ease',
+    };
+  };
 
   return (
     <section
@@ -71,7 +120,7 @@ export default function Hero() {
             {/* Badge */}
             <div
               className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass self-start mb-6"
-              style={{ animation: 'fadeUp 0.6s ease forwards', animationDelay: '0.1s', opacity: 0 }}
+              style={{ animation: 'fadeUp 0.6s ease forwards', animationDelay: '2.5s', opacity: 0 }}
             >
               <span className="w-2 h-2 rounded-full bg-spotify-green animate-pulse" />
               <span className="section-label">Nairobi, Kenya — Digital Ecosystems</span>
@@ -82,19 +131,19 @@ export default function Hero() {
               style={{ fontSize: 'clamp(3.4rem, 8vw, 6.5rem)' }}>
               <span
                 className="block text-white overflow-hidden"
-                style={{ animation: 'slideUp 0.7s cubic-bezier(.16,1,.3,1) forwards', animationDelay: '0.2s', opacity: 0 }}
+                style={{ animation: 'slideUp 0.7s cubic-bezier(.16,1,.3,1) forwards', animationDelay: '2.6s', opacity: 0 }}
               >
                 Data
               </span>
               <span
                 className="block gradient-text overflow-hidden"
-                style={{ animation: 'slideUp 0.7s cubic-bezier(.16,1,.3,1) forwards', animationDelay: '0.34s', opacity: 0 }}
+                style={{ animation: 'slideUp 0.7s cubic-bezier(.16,1,.3,1) forwards', animationDelay: '2.74s', opacity: 0 }}
               >
                 Driven
               </span>
               <span
                 className="block text-white overflow-hidden"
-                style={{ animation: 'slideUp 0.7s cubic-bezier(.16,1,.3,1) forwards', animationDelay: '0.48s', opacity: 0 }}
+                style={{ animation: 'slideUp 0.7s cubic-bezier(.16,1,.3,1) forwards', animationDelay: '2.88s', opacity: 0 }}
               >
                 Marketing.
               </span>
@@ -102,11 +151,15 @@ export default function Hero() {
 
             {/* ── Dashboard cards ─────────────────────────────────── */}
             <div
+              ref={cardsContainerRef}
               className="relative mb-8 h-[260px] sm:h-[280px]"
-              style={{ animation: 'fadeUp 0.7s ease forwards', animationDelay: '0.7s', opacity: 0 }}
+              style={{ zIndex: 30 }}
             >
               {/* Campaign Report card */}
-              <div className="absolute top-0 left-0 glass-card rounded-2xl p-5 w-[270px] sm:w-[300px] z-10">
+              <div
+                className="absolute top-0 left-0 glass-card rounded-2xl p-5 w-[270px] sm:w-[300px] z-10"
+                style={getCardStyle('campaign')}
+              >
                 <p className="text-white/50 text-xs font-semibold uppercase tracking-wider mb-3">
                   Campaign Report
                 </p>
@@ -153,7 +206,7 @@ export default function Hero() {
                               }`}
                               style={{
                                 height: active ? `${h * 0.56}px` : '4px',
-                                transitionDelay: `${0.7 + gi * 0.06 + bi * 0.02}s`,
+                                transitionDelay: `${gi * 0.08 + bi * 0.03}s`,
                               }}
                             />
                           ))}
@@ -165,15 +218,13 @@ export default function Hero() {
                 </div>
               </div>
 
-              {/* Goal Achievement card – offset right + down with breathing room */}
+              {/* Goal Achievement card */}
               <div
                 className="absolute bottom-0 left-[230px] sm:left-[280px] z-20 rounded-2xl p-5 w-[200px] sm:w-[220px]"
                 style={{
+                  ...getCardStyle('goal'),
                   background: 'linear-gradient(135deg, #1DB954 0%, #15a347 100%)',
                   boxShadow: '0 20px 60px rgba(29,185,84,0.35)',
-                  animation: 'fadeUp 0.7s ease forwards',
-                  animationDelay: '0.9s',
-                  opacity: 0,
                 }}
               >
                 <div className="flex items-center gap-2 mb-3">
@@ -197,7 +248,7 @@ export default function Hero() {
                 <div className="mt-3 h-1.5 rounded-full bg-black/15 overflow-hidden">
                   <div
                     className="h-full rounded-full bg-black/40 transition-all duration-1000 ease-out"
-                    style={{ width: active ? '54%' : '0%', transitionDelay: '1.2s' }}
+                    style={{ width: active ? '54%' : '0%', transitionDelay: '0.3s' }}
                   />
                 </div>
               </div>
@@ -206,7 +257,7 @@ export default function Hero() {
             {/* Subtitle */}
             <p
               className="text-spotify-subdued text-base sm:text-lg leading-relaxed max-w-md mb-8"
-              style={{ animation: 'fadeUp 0.7s ease forwards', animationDelay: '1s', opacity: 0 }}
+              style={{ animation: 'fadeUp 0.7s ease forwards', animationDelay: '3s', opacity: 0 }}
             >
               We help businesses attract the right audience through data-driven digital ecosystems — built for measurable, compounding growth.
             </p>
@@ -214,7 +265,7 @@ export default function Hero() {
             {/* CTAs */}
             <div
               className="flex flex-wrap gap-3"
-              style={{ animation: 'fadeUp 0.7s ease forwards', animationDelay: '1.1s', opacity: 0 }}
+              style={{ animation: 'fadeUp 0.7s ease forwards', animationDelay: '3.1s', opacity: 0 }}
             >
               <a href="#services" className="btn-primary text-sm px-7 py-3.5 group">
                 Explore Services
@@ -226,10 +277,11 @@ export default function Hero() {
             </div>
           </div>
 
-          {/* ── RIGHT – image panel ──────────────────────────────── */}
+          {/* ── RIGHT – abstract visual panel ──────────────────────── */}
           <div
+            ref={rightPanelRef}
             className="hidden lg:block"
-            style={{ animation: 'fadeUp 0.8s cubic-bezier(.16,1,.3,1) forwards', animationDelay: '0.5s', opacity: 0 }}
+            style={{ animation: 'fadeUp 0.8s cubic-bezier(.16,1,.3,1) forwards', animationDelay: '0.1s', opacity: 0 }}
           >
             <div className="relative">
               {/* Glow behind card */}
@@ -288,7 +340,7 @@ export default function Hero() {
                 {/* Floating stat – top right */}
                 <div
                   className="absolute top-6 right-6 glass-dark rounded-2xl px-4 py-3"
-                  style={{ animation: 'fadeUp 0.6s ease forwards', animationDelay: '1.3s', opacity: 0 }}
+                  style={{ animation: 'fadeUp 0.6s ease forwards', animationDelay: '1.4s', opacity: 0 }}
                 >
                   <p className="text-white/40 text-[10px] uppercase tracking-wider mb-0.5">Active Campaigns</p>
                   <p className="text-white font-black text-xl">340+</p>
@@ -297,7 +349,7 @@ export default function Hero() {
                 {/* Floating stat – bottom left */}
                 <div
                   className="absolute bottom-6 left-6 right-6 glass-dark rounded-2xl px-4 py-3 flex items-center justify-between"
-                  style={{ animation: 'fadeUp 0.6s ease forwards', animationDelay: '1.5s', opacity: 0 }}
+                  style={{ animation: 'fadeUp 0.6s ease forwards', animationDelay: '1.6s', opacity: 0 }}
                 >
                   <div>
                     <p className="text-white/40 text-[10px] uppercase tracking-wider mb-0.5">Avg. ROI</p>
@@ -323,7 +375,7 @@ export default function Hero() {
 
       {/* Scroll indicator */}
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2"
-        style={{ animation: 'fadeUp 0.5s ease forwards', animationDelay: '1.8s', opacity: 0 }}>
+        style={{ animation: 'fadeUp 0.5s ease forwards', animationDelay: '3.4s', opacity: 0 }}>
         <span className="text-[10px] text-white/25 tracking-widest uppercase">Scroll</span>
         <div className="w-px h-10 bg-gradient-to-b from-white/20 to-transparent" />
       </div>
