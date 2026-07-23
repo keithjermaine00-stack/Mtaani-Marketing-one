@@ -15,15 +15,10 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
-  const lastScroll = useRef(0);
-  const [visible, setVisible] = useState(true);
 
   useEffect(() => {
     const handleScroll = () => {
-      const current = window.scrollY;
-      setScrolled(current > 60);
-      setVisible(current < lastScroll.current || current < 100);
-      lastScroll.current = current;
+      setScrolled(window.scrollY > 60);
     };
 
     const handleSectionObserve = () => {
@@ -51,7 +46,7 @@ export default function Navbar() {
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        visible ? 'translate-y-0' : '-translate-y-full'
+        'translate-y-0'
       } ${scrolled ? 'glass-dark shadow-2xl' : 'bg-transparent'}`}
     >
       <nav className="max-w-7xl mx-auto px-6 lg:px-8 h-20 flex items-center justify-between">
