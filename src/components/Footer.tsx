@@ -1,10 +1,6 @@
 import { Instagram, Twitter, Linkedin, Youtube, ArrowUp } from 'lucide-react';
-
-const footerLinks = {
-  Services: ['Social Media Marketing', 'SEO & Content', 'Paid Advertising', 'Website Development', 'Brand Identity', 'App Development'],
-  Company: ['About Us', 'Our Process', 'Case Studies', 'Blog', 'Careers'],
-  Support: ['Contact Us', 'FAQ', 'Privacy Policy', 'Terms of Service'],
-};
+import { Link } from 'react-router-dom';
+import { services } from '@/data/services';
 
 const socials = [
   { icon: Instagram, href: '#', label: 'Instagram' },
@@ -12,6 +8,9 @@ const socials = [
   { icon: Linkedin, href: '#', label: 'LinkedIn' },
   { icon: Youtube, href: '#', label: 'YouTube' },
 ];
+
+const companyLinks = ['About Us', 'Our Process', 'Case Studies', 'Blog', 'Careers'];
+const supportLinks = ['Contact Us', 'FAQ', 'Privacy Policy', 'Terms of Service'];
 
 export default function Footer() {
   const scrollTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -31,9 +30,9 @@ export default function Footer() {
             Your digital ecosystem awaits. Let's create a system that works for you around the clock.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <a href="#contact" className="btn-primary text-base px-8 py-4">
+            <Link to="/#contact" className="btn-primary text-base px-8 py-4">
               Start Your Project
-            </a>
+            </Link>
             <a href="https://wa.me/254700000000" className="btn-outline text-base px-8 py-4">
               WhatsApp Us
             </a>
@@ -70,21 +69,50 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Link columns */}
-          {Object.entries(footerLinks).map(([title, links]) => (
-            <div key={title}>
-              <h4 className="text-white text-xs font-bold uppercase tracking-widest mb-5">{title}</h4>
-              <ul className="space-y-3">
-                {links.map(link => (
-                  <li key={link}>
-                    <a href="#" className="text-spotify-subdued text-sm hover:text-spotify-green transition-colors duration-150">
-                      {link}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+          {/* Services column */}
+          <div>
+            <h4 className="text-white text-xs font-bold uppercase tracking-widest mb-5">Services</h4>
+            <ul className="space-y-3">
+              {services.map(service => (
+                <li key={service.slug}>
+                  <Link
+                    to={`/services/${service.slug}`}
+                    className="text-spotify-subdued text-sm hover:text-spotify-green transition-colors duration-150"
+                  >
+                    {service.title}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Company column */}
+          <div>
+            <h4 className="text-white text-xs font-bold uppercase tracking-widest mb-5">Company</h4>
+            <ul className="space-y-3">
+              {companyLinks.map(link => (
+                <li key={link}>
+                  <a href="#" className="text-spotify-subdued text-sm hover:text-spotify-green transition-colors duration-150">
+                    {link}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Support column */}
+          <div>
+            <h4 className="text-white text-xs font-bold uppercase tracking-widest mb-5">Support</h4>
+            <ul className="space-y-3">
+              {supportLinks.map(link => (
+                <li key={link}>
+                  <a href="#" className="text-spotify-subdued text-sm hover:text-spotify-green transition-colors duration-150">
+                    {link}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
 
         {/* Bottom bar */}

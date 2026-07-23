@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 
 const navLinks = [
@@ -15,6 +16,8 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
+  const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -43,15 +46,46 @@ export default function Navbar() {
     };
   }, []);
 
+  // When arriving on the home page via a hash link, scroll to that section
+  useEffect(() => {
+    if (location.pathname === '/' && location.hash) {
+      const el = document.getElementById(location.hash.slice(1));
+      if (el) {
+        setTimeout(() => el.scrollIntoView({ behavior: 'smooth' }), 100);
+      }
+    } else if (location.pathname === '/') {
+      window.scrollTo(0, 0);
+    }
+  }, [location]);
+
+  const handleNavClick = (e: React.MouseEvent, href: string) => {
+    e.preventDefault();
+    setMobileOpen(false);
+    const sectionId = href.slice(1);
+
+    if (location.pathname !== '/') {
+      navigate(`/${href}`);
+    } else {
+      const el = document.getElementById(sectionId);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  };
+
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
         'translate-y-0'
-      } ${scrolled ? 'glass-dark shadow-2xl' : 'bg-transparent'}`}
+      } ${scrolled || location.pathname !== '/' ? 'glass-dark shadow-2xl' : 'bg-transparent'}`}
     >
       <nav className="max-w-7xl mx-auto px-6 lg:px-8 h-20 flex items-center justify-between">
         {/* Logo */}
-        <a href="#home" className="flex items-center gap-3 group">
+        <a
+          href="#home"
+          onClick={(e) => handleNavClick(e, '#home')}
+          className="flex items-center gap-3 group"
+        >
           <img
             src="/logo-sample-1.png"
             alt="Mtaani Marketing"
@@ -70,14 +104,15 @@ export default function Navbar() {
             <li key={link.href}>
               <a
                 href={link.href}
+                onClick={(e) => handleNavClick(e, link.href)}
                 className={`relative px-4 py-2 text-sm font-medium rounded-full transition-all duration-200 ${
-                  activeSection === link.href.slice(1)
+                  activeSection === link.href.slice(1) && location.pathname === '/'
                     ? 'text-spotify-green'
                     : 'text-white/70 hover:text-white'
                 }`}
               >
                 {link.label}
-                {activeSection === link.href.slice(1) && (
+                {activeSection === link.href.slice(1) && location.pathname === '/' && (
                   <span className="absolute bottom-0.5 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-spotify-green" />
                 )}
               </a>
@@ -87,7 +122,11 @@ export default function Navbar() {
 
         {/* CTA */}
         <div className="hidden lg:flex items-center gap-3">
-          <a href="#contact" className="btn-primary text-sm py-2.5 px-6">
+          <a
+            href="#contact"
+            onClick={(e) => handleNavClick(e, '#contact')}
+            className="btn-primary text-sm py-2.5 px-6"
+          >
             Get Started
           </a>
         </div>
@@ -113,9 +152,9 @@ export default function Navbar() {
             <li key={link.href}>
               <a
                 href={link.href}
-                onClick={() => setMobileOpen(false)}
+                onClick={(e) => handleNavClick(e, link.href)}
                 className={`block px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 ${
-                  activeSection === link.href.slice(1)
+                  activeSection === link.href.slice(1) && location.pathname === '/'
                     ? 'text-spotify-green bg-spotify-green/10'
                     : 'text-white/70 hover:text-white hover:bg-white/5'
                 }`}
@@ -127,7 +166,7 @@ export default function Navbar() {
           <li className="pt-2">
             <a
               href="#contact"
-              onClick={() => setMobileOpen(false)}
+              onClick={(e) => handleNavClick(e, '#contact')}
               className="btn-primary w-full justify-center text-sm py-3"
             >
               Get Started
