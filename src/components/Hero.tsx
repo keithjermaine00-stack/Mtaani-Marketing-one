@@ -84,19 +84,19 @@ export default function Hero() {
                 className="block text-white overflow-hidden"
                 style={{ animation: 'slideUp 0.7s cubic-bezier(.16,1,.3,1) forwards', animationDelay: '0.2s', opacity: 0 }}
               >
-                ecosystem-
+                Data
               </span>
               <span
                 className="block gradient-text overflow-hidden"
                 style={{ animation: 'slideUp 0.7s cubic-bezier(.16,1,.3,1) forwards', animationDelay: '0.34s', opacity: 0 }}
               >
-                driven
+                Driven
               </span>
               <span
                 className="block text-white overflow-hidden"
                 style={{ animation: 'slideUp 0.7s cubic-bezier(.16,1,.3,1) forwards', animationDelay: '0.48s', opacity: 0 }}
               >
-                marketing.
+                Marketing.
               </span>
             </h1>
 
