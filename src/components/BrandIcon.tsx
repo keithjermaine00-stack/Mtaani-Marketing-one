@@ -16,6 +16,8 @@ import {
   siGoogleanalytics,
   siLighthouse,
   siPagespeedinsights,
+  siGoogle,
+  siSemrush,
   type SimpleIcon,
 } from 'simple-icons';
 
@@ -37,6 +39,8 @@ type BrandKey =
   | 'googleanalytics'
   | 'lighthouse'
   | 'pagespeedinsights'
+  | 'google'
+  | 'semrush'
   | 'photoshop'
   | 'illustrator'
   | 'canva'
@@ -62,6 +66,8 @@ const simpleIconMap: Record<Exclude<BrandKey, 'photoshop' | 'illustrator' | 'can
   googleanalytics: siGoogleanalytics,
   lighthouse: siLighthouse,
   pagespeedinsights: siPagespeedinsights,
+  google: siGoogle,
+  semrush: siSemrush,
 };
 
 const customIcons: Record<'photoshop' | 'illustrator' | 'canva' | 'premierepro' | 'aftereffects' | 'mpesa', { hex: string; path: string }> = {

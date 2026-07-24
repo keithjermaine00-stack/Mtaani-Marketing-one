@@ -178,10 +178,8 @@ export const services: Service[] = [
     tools: {
       title: 'Tools We Use',
       icons: [
-        { key: 'googlesearchconsole', label: 'Google Search Console' },
-        { key: 'googleanalytics', label: 'Google Analytics' },
-        { key: 'lighthouse', label: 'Lighthouse' },
-        { key: 'pagespeedinsights', label: 'PageSpeed Insights' },
+        { key: 'semrush', label: 'Semrush' },
+        { key: 'google', label: 'Google' },
       ],
     },
     features: [
@@ -272,10 +270,9 @@ export const services: Service[] = [
     tools: {
       title: 'Design Tools',
       icons: [
-        { key: 'photoshop', label: 'Photoshop' },
-        { key: 'illustrator', label: 'Illustrator' },
         { key: 'blender', label: 'Blender' },
-        { key: 'canva', label: 'Canva' },
+        { key: 'photoshop', label: 'Photoshop' },
+        { key: 'aftereffects', label: 'After Effects' },
       ],
     },
     features: [
