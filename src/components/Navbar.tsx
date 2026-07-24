@@ -87,7 +87,7 @@ export default function Navbar() {
           className="flex items-center gap-3 group"
         >
           <img
-            src="/logo-sample-1.png"
+            src="/logo-version-3.png"
             alt="Mtaani Marketing"
             className="h-10 w-10 object-contain rounded-full transition-transform duration-300 group-hover:scale-110"
             style={{ filter: 'brightness(1.1)' }}
