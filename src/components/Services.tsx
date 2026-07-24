@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 import { services } from '@/data/services';
 import { ArrowRight } from 'lucide-react';
+import { BrandIcon } from '@/components/BrandIcon';
 
 export default function Services() {
   const { ref } = useScrollAnimation();
@@ -28,12 +29,16 @@ export default function Services() {
 
         {/* Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {services.map((service, i) => {
-            const Icon = service.icon;
-            return (
-              <ServiceCard key={service.slug} slug={service.slug} title={service.title} description={service.shortDescription} Icon={Icon} delay={i * 0.06} />
-            );
-          })}
+          {services.map((service, i) => (
+            <ServiceCard
+              key={service.slug}
+              slug={service.slug}
+              title={service.title}
+              description={service.shortDescription}
+              tools={service.tools}
+              delay={i * 0.06}
+            />
+          ))}
         </div>
       </div>
 
@@ -46,13 +51,13 @@ function ServiceCard({
   slug,
   title,
   description,
-  Icon,
+  tools,
   delay,
 }: {
   slug: string;
   title: string;
   description: string;
-  Icon: React.ComponentType<{ size?: number; className?: string }>;
+  tools: { title: string; icons: { key: string; label: string }[] };
   delay: number;
 }) {
   const { ref } = useScrollAnimation();
@@ -64,8 +69,20 @@ function ServiceCard({
       className="animate-on-scroll glass-card rounded-2xl p-6 group block"
       style={{ transitionDelay: `${delay}s` }}
     >
-      <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-5 bg-spotify-green/10 group-hover:bg-spotify-green/20 transition-colors duration-300">
-        <Icon size={22} className="text-spotify-green" />
+      <div className="flex flex-wrap items-center gap-2.5 mb-5 min-h-[3rem]">
+        {tools.icons.map((tool) => (
+          <div
+            key={tool.key}
+            title={tool.label}
+            className="w-10 h-10 rounded-xl flex items-center justify-center bg-white/[0.06] group-hover:bg-white/[0.1] transition-colors duration-300 ring-1 ring-white/5"
+          >
+            <BrandIcon
+              iconKey={tool.key as never}
+              size={20}
+              className="transition-transform duration-300 group-hover:scale-110"
+            />
+          </div>
+        ))}
       </div>
       <h3 className="text-white font-bold text-lg mb-2 group-hover:text-spotify-green transition-colors duration-200">
         {title}

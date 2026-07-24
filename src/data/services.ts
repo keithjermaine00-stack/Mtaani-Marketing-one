@@ -1,7 +1,8 @@
 import {
-  Globe, Megaphone, Search, ShieldCheck, Pen, Smartphone, BarChart2, Video, Mail,
+  Globe, Megaphone, Search, ShieldCheck, Pen, Smartphone, BarChart2, Video, Mail, SmartphoneCharging,
   type LucideIcon,
 } from 'lucide-react';
+import type { ToolGroup } from '@/components/BrandIcon';
 
 export type Service = {
   slug: string;
@@ -12,6 +13,7 @@ export type Service = {
   heroHeadline: string;
   heroSubtext: string;
   overview: string;
+  tools: ToolGroup;
   features: { title: string; description: string }[];
   process: { step: string; title: string; description: string }[];
   deliverables: string[];
@@ -31,6 +33,15 @@ export const services: Service[] = [
       'We build fast, responsive, SEO-friendly websites that serve as the foundation of your digital ecosystem.',
     overview:
       'Your website is the digital storefront of your business. We design and develop websites that are not only visually stunning but engineered for performance, conversion, and scalability. From landing pages to full corporate sites, every pixel and millisecond is optimized for impact.',
+    tools: {
+      title: 'Our Stack',
+      icons: [
+        { key: 'react', label: 'React' },
+        { key: 'nodedotjs', label: 'Node.js' },
+        { key: 'express', label: 'Express.js' },
+        { key: 'supabase', label: 'Supabase' },
+      ],
+    },
     features: [
       { title: 'Mobile-First Design', description: 'Every site is built to look and perform flawlessly on mobile devices, where most of your audience lives.' },
       { title: 'Lightning-Fast Performance', description: 'Optimized assets, lazy loading, and modern frameworks ensure sub-second load times.' },
@@ -59,6 +70,53 @@ export const services: Service[] = [
     ],
   },
   {
+    slug: 'mpesa-integration',
+    icon: SmartphoneCharging,
+    title: 'M-Pesa Integration',
+    shortDescription:
+      'Seamless Safaricom Daraja API integration for STK push, C2B, B2B, and automated payment confirmation on your site or app.',
+    accent: '#41B549',
+    heroHeadline: 'Accept M-Pesa Payments, Effortlessly',
+    heroSubtext:
+      'We integrate the Safaricom Daraja API so your customers pay with M-Pesa in seconds — with instant, verified confirmation.',
+    overview:
+      'M-Pesa is the dominant payment method in Kenya. We integrate the Safaricom Daraja API into your website, app, or backend so you can accept payments via STK push, C2B, and B2B — with real-time, secure confirmation callbacks that update your system automatically. From checkout buttons to automated reconciliation, we handle the full payment flow.',
+    tools: {
+      title: 'Our Stack',
+      icons: [
+        { key: 'mpesa', label: 'M-Pesa Daraja API' },
+        { key: 'nodedotjs', label: 'Node.js' },
+        { key: 'supabase', label: 'Supabase' },
+      ],
+    },
+    features: [
+      { title: 'STK Push Payments', description: 'Customers get a payment prompt on their phone — no account numbers to type. One tap to pay.' },
+      { title: 'C2B & B2B Integration', description: 'Paybill and till-number flows for customer-to-business and business-to-business transactions.' },
+      { title: 'Instant Confirmation', description: 'Secure callback URLs confirm every payment in real time and update your dashboard automatically.' },
+      { title: 'Automated Reconciliation', description: 'Every transaction is logged, matched, and reconciled — no manual checking of M-Pesa statements.' },
+      { title: 'Subscription & Recurring', description: 'Support for recurring M-Pesa payments for memberships, installments, and subscription plans.' },
+      { title: 'Web & Mobile Ready', description: 'Works on your website, mobile app, or internal tools — any platform that can call an API.' },
+    ],
+    process: [
+      { step: '01', title: 'Sandbox Setup', description: 'We register your app on the Safaricom Daraja portal and configure sandbox credentials for testing.' },
+      { step: '02', title: 'Integration & Testing', description: 'We build the STK push, callback handling, and reconciliation logic, then test end-to-end in the sandbox.' },
+      { step: '03', title: 'Go-Live', description: 'We switch to production credentials, submit your shortcode for approval, and deploy to your live environment.' },
+      { step: '04', title: 'Monitor & Support', description: 'We monitor transactions, handle edge cases, and provide ongoing support as you scale.' },
+    ],
+    deliverables: [
+      'Daraja API integration (STK push + callbacks)',
+      'Payment confirmation and reconciliation logic',
+      'Admin dashboard for transaction monitoring',
+      'Documentation and handover',
+      '30 days of post-launch support',
+    ],
+    faqs: [
+      { question: 'Do I need a Paybill or till number?', answer: 'Yes. You need an existing Safaricom Paybill or till number. If you do not have one, we guide you through the application process.' },
+      { question: 'How long does integration take?', answer: 'A standard STK push integration takes 3–5 days once sandbox credentials are set up. Production go-live depends on Safaricom approval.' },
+      { question: 'Can you integrate M-Pesa into my existing site?', answer: 'Yes. We work with most platforms — custom sites, WordPress, Shopify, and mobile apps. Contact us with your setup for a specific quote.' },
+    ],
+  },
+  {
     slug: 'social-media-marketing',
     icon: Megaphone,
     title: 'Social Media Marketing',
@@ -70,6 +128,14 @@ export const services: Service[] = [
       'Data-informed social media strategies that grow your audience, spark engagement, and turn followers into customers.',
     overview:
       'Social media is where your audience discovers, evaluates, and connects with your brand. We craft platform-specific strategies that go beyond posting — building engaged communities, driving traffic, and generating leads through a mix of organic content and targeted amplification.',
+    tools: {
+      title: 'Platforms We Master',
+      icons: [
+        { key: 'tiktok', label: 'TikTok' },
+        { key: 'instagram', label: 'Instagram' },
+        { key: 'x', label: 'X (Twitter)' },
+      ],
+    },
     features: [
       { title: 'Platform-Specific Strategy', description: 'Tailored content strategies for Instagram, TikTok, X, LinkedIn, and Facebook — not one-size-fits-all.' },
       { title: 'Content Calendar Management', description: 'Consistent, on-brand posting schedules that keep your audience engaged and algorithms happy.' },
@@ -109,6 +175,15 @@ export const services: Service[] = [
       'We combine technical SEO with content strategy to build sustainable organic traffic that compounds over time.',
     overview:
       'Search engines are the gateway to your customers. We take a holistic approach to SEO — technical foundations, keyword strategy, content creation, and authority building — to move you up the rankings and keep you there. The result is a steady stream of qualified organic traffic that does not depend on ad spend.',
+    tools: {
+      title: 'Tools We Use',
+      icons: [
+        { key: 'googlesearchconsole', label: 'Google Search Console' },
+        { key: 'googleanalytics', label: 'Google Analytics' },
+        { key: 'lighthouse', label: 'Lighthouse' },
+        { key: 'pagespeedinsights', label: 'PageSpeed Insights' },
+      ],
+    },
     features: [
       { title: 'Technical SEO Audit', description: 'A deep crawl of your site identifies indexing issues, speed bottlenecks, and structural problems.' },
       { title: 'Keyword Research', description: 'We map the search terms your customers use and prioritize by intent and opportunity.' },
@@ -148,6 +223,13 @@ export const services: Service[] = [
       'We design, launch, and manage high-performance ad campaigns on Google, Meta, and beyond — optimized for ROAS.',
     overview:
       'Paid advertising is the fastest way to reach your target audience, but only when it is managed with precision. We build data-driven campaigns on Google Ads, Meta Ads, and other platforms — continuously testing and optimizing to lower your cost per acquisition and scale what works.',
+    tools: {
+      title: 'Platforms We Use',
+      icons: [
+        { key: 'meta', label: 'Meta Ads' },
+        { key: 'googleads', label: 'Google Ads' },
+      ],
+    },
     features: [
       { title: 'Campaign Strategy', description: 'Full-funnel campaign architecture from awareness to retargeting to conversion.' },
       { title: 'Audience Targeting', description: 'Custom and lookalike audiences built from your data, competitor analysis, and market research.' },
@@ -187,6 +269,15 @@ export const services: Service[] = [
       'From logo to brand guidelines, we craft visual identities that tell your story and set you apart from the competition.',
     overview:
       'Your brand is more than a logo — it is the feeling people get when they interact with your business. We build cohesive brand identities that combine strategy, design, and storytelling to create a memorable presence across every touchpoint.',
+    tools: {
+      title: 'Design Tools',
+      icons: [
+        { key: 'photoshop', label: 'Photoshop' },
+        { key: 'illustrator', label: 'Illustrator' },
+        { key: 'blender', label: 'Blender' },
+        { key: 'canva', label: 'Canva' },
+      ],
+    },
     features: [
       { title: 'Logo Design', description: 'Distinctive, scalable logos designed for every context from app icons to billboards.' },
       { title: 'Brand Guidelines', description: 'A complete guide covering logo usage, colors, typography, and tone of voice.' },
@@ -226,8 +317,15 @@ export const services: Service[] = [
       'From MVP to scale, we build mobile and web applications with modern technology and a relentless focus on user experience.',
     overview:
       'Whether you need a customer-facing mobile app, an internal tool, or a progressive web app, we build software that is fast, reliable, and delightful to use. Our team handles everything from product design to deployment, using modern stacks that scale with your business.',
+    tools: {
+      title: 'Our Stack',
+      icons: [
+        { key: 'flutter', label: 'Flutter' },
+        { key: 'kotlin', label: 'Kotlin Multiplatform' },
+      ],
+    },
     features: [
-      { title: 'Cross-Platform Mobile', description: 'React Native and Flutter apps that run on iOS and Android from a single codebase.' },
+      { title: 'Cross-Platform Mobile', description: 'Flutter and Kotlin Multiplatform apps that run on iOS and Android from a shared codebase.' },
       { title: 'Progressive Web Apps', description: 'Web apps that feel native — installable, offline-capable, and lightning fast.' },
       { title: 'API & Backend', description: 'Scalable backend services, databases, and APIs built for performance and security.' },
       { title: 'UI/UX Design', description: 'Intuitive, accessible interfaces designed through research and user testing.' },
@@ -248,7 +346,7 @@ export const services: Service[] = [
       '30 days of post-launch support',
     ],
     faqs: [
-      { question: 'Native or cross-platform?', answer: 'We recommend cross-platform (React Native or Flutter) for most apps — it reduces cost and time while covering 95% of use cases. For specialized performance needs, we build native.' },
+      { question: 'Native or cross-platform?', answer: 'We recommend cross-platform (Flutter or Kotlin Multiplatform) for most apps — it reduces cost and time while covering 95% of use cases. For specialized performance needs, we build native.' },
       { question: 'How much does an app cost?', answer: 'App projects vary widely. A simple MVP starts around KES 500,000, while complex apps scale from there. Contact us for a detailed quote.' },
       { question: 'Do you maintain the app after launch?', answer: 'Yes. We offer monthly support and maintenance plans, and can continue building features as your product grows.' },
     ],
@@ -265,6 +363,13 @@ export const services: Service[] = [
       'From short-form reels to brand films, we produce video content that captures attention and drives engagement.',
     overview:
       'Video is the most consumed content format on the internet. We produce video across the full spectrum — from bite-sized social reels to polished brand films — with a focus on storytelling, quality, and platform-native formats that perform.',
+    tools: {
+      title: 'Editing Tools',
+      icons: [
+        { key: 'premierepro', label: 'Premiere Pro' },
+        { key: 'aftereffects', label: 'After Effects' },
+      ],
+    },
     features: [
       { title: 'Short-Form Video', description: 'Reels, TikToks, and Shorts designed for maximum engagement and shareability.' },
       { title: 'Brand Films', description: 'Cinematic brand stories that communicate your mission and values.' },
@@ -304,6 +409,12 @@ export const services: Service[] = [
       'We design automated email sequences and campaigns that deliver the right message at the right time.',
     overview:
       'Email remains one of the highest-ROI marketing channels. We build email programs that nurture leads, onboard customers, and drive repeat purchases — all powered by automation and personalized content that speaks to each subscriber.',
+    tools: {
+      title: 'Platform We Use',
+      icons: [
+        { key: 'mailchimp', label: 'Mailchimp' },
+      ],
+    },
     features: [
       { title: 'Automation Sequences', description: 'Welcome series, abandoned cart, re-engagement, and post-purchase flows.' },
       { title: 'Newsletter Design', description: 'Beautiful, on-brand newsletter templates that your audience looks forward to.' },
@@ -343,6 +454,15 @@ export const services: Service[] = [
       'A full diagnostic of your website, social media, SEO, ads, and competitors — with a prioritized action plan.',
     overview:
       'Before you invest in marketing, you need to know what is working and what is not. Our digital ecosystem audit examines every touchpoint — website, social media, SEO, paid ads, and competitors — and delivers a clear, prioritized roadmap for growth.',
+    tools: {
+      title: 'Audit Tools',
+      icons: [
+        { key: 'googlesearchconsole', label: 'Google Search Console' },
+        { key: 'googleanalytics', label: 'Google Analytics' },
+        { key: 'lighthouse', label: 'Lighthouse' },
+        { key: 'pagespeedinsights', label: 'PageSpeed Insights' },
+      ],
+    },
     features: [
       { title: 'Website Audit', description: 'Performance, UX, conversion paths, and technical health of your website.' },
       { title: 'Social Media Review', description: 'Platform-by-platform analysis of content, engagement, and consistency.' },

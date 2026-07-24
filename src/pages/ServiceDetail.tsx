@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { ArrowRight, ArrowLeft, Check, ChevronDown } from 'lucide-react';
 import { services, getServiceBySlug } from '@/data/services';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
+import { BrandIcon } from '@/components/BrandIcon';
 
 export default function ServiceDetail() {
   const { slug } = useParams<{ slug: string }>();
@@ -67,11 +68,24 @@ export default function ServiceDetail() {
         </div>
       </section>
 
-      {/* Overview */}
+      {/* Overview + Tools */}
       <section className="py-16 bg-spotify-dark-elevated">
         <div className="max-w-4xl mx-auto px-6 lg:px-8">
           <p className="section-label mb-3">Overview</p>
-          <p className="text-white/80 text-lg leading-relaxed">{service.overview}</p>
+          <p className="text-white/80 text-lg leading-relaxed mb-10">{service.overview}</p>
+
+          <p className="section-label mb-4">{service.tools.title}</p>
+          <div className="flex flex-wrap gap-4">
+            {service.tools.icons.map((tool) => (
+              <div
+                key={tool.key}
+                className="flex items-center gap-3 glass-card rounded-xl px-4 py-3"
+              >
+                <BrandIcon iconKey={tool.key as never} size={24} />
+                <span className="text-white/90 font-semibold text-sm">{tool.label}</span>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
